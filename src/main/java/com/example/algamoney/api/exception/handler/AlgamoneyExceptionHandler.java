@@ -2,7 +2,6 @@ package com.example.algamoney.api.exception.handler;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -19,7 +18,7 @@ import com.example.algamoney.api.exception.model.ApiValidationError;
 import com.example.algamoney.api.exception.service.InactivePersonException;
 
 @ControllerAdvice
-@Order(Ordered.HIGHEST_PRECEDENCE)
+@Order(5)
 public class AlgamoneyExceptionHandler{
 	
 	@Autowired
