@@ -1,25 +1,29 @@
 package com.example.algamoney.api.config.property;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
-import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
-@ConfigurationProperties("algamoney")
+@Configuration
+@ConfigurationProperties(prefix="algamoney")
+@Getter
+@Setter
 public class AlgamoneyApiProperty {
 	
-	@Getter
+	private String test;
 	private final Seguranca seguranca = new Seguranca();
-	
-	@Getter
 	private final CORS cors = new CORS();
 
-	@Data 
+	@Getter
+	@Setter
 	public static class Seguranca{
 		private boolean enableHttps;		
 	}
 	
-	@Data
+	@Getter
+	@Setter
 	public static class CORS{
 		private String[] enableOrigin;
 	}
