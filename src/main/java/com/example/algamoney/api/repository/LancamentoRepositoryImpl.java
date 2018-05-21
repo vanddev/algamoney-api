@@ -10,19 +10,20 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Repository;
 
 import com.example.algamoney.api.model.Lancamento;
 import com.example.algamoney.api.model.QLancamento;
 import com.example.algamoney.api.repository.filter.LancamentoFilter;
+import com.example.algamoney.api.repository.projection.ResumoLancamento;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 
 public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery{
 	
 	@PersistenceContext
 	private EntityManager manager;
-
+	
 	@Override
 	public Page<Lancamento> filtrar(LancamentoFilter lancamentoFilter, Pageable pageable) {
 		JPAQuery<Lancamento> query = new JPAQuery<Lancamento>(manager);
@@ -35,7 +36,26 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery{
 		return new PageImpl<>(query.fetch(), pageable, total);
 	}
 
-	private void restricoesPaginacao(JPAQuery<Lancamento> query, Pageable pageable) {
+	@Override
+	public Page<ResumoLancamento> resumir(LancamentoFilter lancamentoFilter, Pageable pageable) {
+		JPAQuery<Lancamento> query = new JPAQuery<Lancamento>(manager);
+		QLancamento lancamento = QLancamento.lancamento;
+		Predicate[] predicates = criarRestricoes(lancamentoFilter, lancamento);
+		query.where(predicates);
+		query.from(lancamento).where(predicates);
+		long total = query.fetchCount();
+		restricoesPaginacao(query, pageable);
+		List<ResumoLancamento> dtos = query.select(
+			    Projections.constructor(ResumoLancamento.class, 
+			    						lancamento.id, lancamento.descricao,
+			    						lancamento.dataVencimento, lancamento.dataPagamento,
+			    						lancamento.valor, lancamento.tipo,
+			    						lancamento.categoria.nome, lancamento.pessoa.nome)).fetch();
+	
+	    return new PageImpl<>(dtos, pageable, total);
+	}
+	
+	private void restricoesPaginacao(JPAQuery<?> query, Pageable pageable) {
 		query.offset(pageable.getOffset());
 		query.limit(pageable.getPageSize());
 	}
@@ -57,6 +77,7 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery{
 		
 		return predicates.toArray(new Predicate[predicates.size()]);
 	}
+
 
 	
 }

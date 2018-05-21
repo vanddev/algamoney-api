@@ -11,6 +11,7 @@ import com.example.algamoney.api.model.Lancamento;
 import com.example.algamoney.api.model.Pessoa;
 import com.example.algamoney.api.repository.LancamentoRepository;
 import com.example.algamoney.api.repository.filter.LancamentoFilter;
+import com.example.algamoney.api.repository.projection.ResumoLancamento;
 
 @Service
 public class LancamentoService {
@@ -23,6 +24,10 @@ public class LancamentoService {
 	
 	public Page<Lancamento> findAll(LancamentoFilter lancamentoFilter, Pageable pageable){
 		return repository.filtrar(lancamentoFilter, pageable);
+	}
+	
+	public Page<ResumoLancamento> resumir(LancamentoFilter lancamentoFilter, Pageable pageable){
+		return repository.resumir(lancamentoFilter, pageable);
 	}
 
 	public Lancamento findById(Long id) {
