@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
+	
+	//Bean para o uso dentro do AuthorizationServerConfig
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {

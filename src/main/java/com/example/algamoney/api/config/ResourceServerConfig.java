@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import com.example.algamoney.api.security.util.SecurityUtil;
 
@@ -39,8 +40,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 				.antMatchers("/categorias").permitAll()
 				.anyRequest().authenticated()
 				.and()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-			.csrf().disable();
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and()
+				.csrf().disable();
 	}
 	
 	@Override
@@ -51,6 +53,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	@Bean
 	public MethodSecurityExpressionHandler createExpressionHandler() {
 		return new OAuth2MethodSecurityExpressionHandler();
+	}
+	
+	@Bean
+	public HttpSessionEventPublisher httpSessionEventPublisher() {
+		return new HttpSessionEventPublisher();
 	}
 
 }

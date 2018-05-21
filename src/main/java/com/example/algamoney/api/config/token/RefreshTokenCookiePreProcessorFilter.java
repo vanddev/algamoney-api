@@ -27,6 +27,8 @@ public class RefreshTokenCookiePreProcessorFilter implements Filter{
 	private final String TOKEN_REQUEST_PATH = "/oauth/token";
 	private final String GRANT_TYPE = "refresh_token";
 	
+	
+	//Antes de seguir o fluxo de autenticacao, captura o refresh token do cookie e adicina-o ao body
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
