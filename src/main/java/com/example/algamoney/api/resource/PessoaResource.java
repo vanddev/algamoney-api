@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.algamoney.api.event.RecursoCriadoEvent;
 import com.example.algamoney.api.model.Pessoa;
+import com.example.algamoney.api.repository.filter.PessoaFilter;
 import com.example.algamoney.api.service.PessoaService;
 
 @RestController
@@ -36,8 +37,8 @@ public class PessoaResource {
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA') and #oauth2.hasScope('read')")
-	public List<Pessoa> listar(){
-		return service.findAll();
+	public List<Pessoa> listar(PessoaFilter filter){
+		return service.filtrar(filter);
 	}
 	
 	@PostMapping
