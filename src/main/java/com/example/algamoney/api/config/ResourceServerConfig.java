@@ -3,6 +3,7 @@ package com.example.algamoney.api.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -18,6 +19,7 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import com.example.algamoney.api.security.util.SecurityUtil;
 
+@Profile("oauth-security")
 @Configuration
 @EnableWebSecurity
 @EnableResourceServer
@@ -47,7 +49,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-		resources.stateless(true);
+		resources.stateless(false);
 	}
 	
 	@Bean
