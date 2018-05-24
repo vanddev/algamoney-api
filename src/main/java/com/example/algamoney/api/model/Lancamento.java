@@ -24,7 +24,7 @@ import lombok.Setter;
 @Entity
 @Table(name="Lancamento")
 @Getter
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"pessoa", "categoria"})
 @AllArgsConstructor
 @NoArgsConstructor
 public class Lancamento {

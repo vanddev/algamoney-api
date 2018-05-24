@@ -41,7 +41,6 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery{
 		JPAQuery<Lancamento> query = new JPAQuery<Lancamento>(manager);
 		QLancamento lancamento = QLancamento.lancamento;
 		Predicate[] predicates = criarRestricoes(lancamentoFilter, lancamento);
-		query.where(predicates);
 		query.from(lancamento).where(predicates);
 		long total = query.fetchCount();
 		restricoesPaginacao(query, pageable);
