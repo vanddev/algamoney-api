@@ -1,10 +1,10 @@
 package com.example.algamoney.api.service;
 
-import java.util.List;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.algamoney.api.exception.service.InactivePersonException;
@@ -18,8 +18,8 @@ public class PessoaService {
 	@Autowired
 	private PessoaRepository repository;
 	
-	public List<Pessoa> filtrar(PessoaFilter filter){
-		return repository.filtrar(filter);
+	public Page<Pessoa> filtrar(PessoaFilter filter, Pageable pageable){
+		return repository.filtrar(filter, pageable);
 	}
 	
 	public Pessoa findById(Long id) {
