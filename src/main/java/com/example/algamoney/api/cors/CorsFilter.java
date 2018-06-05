@@ -37,15 +37,19 @@ public class CorsFilter implements Filter{
 		HttpServletResponse resp = (HttpServletResponse) response;
 		
 		String reqOrigin = req.getHeader(ORIGIN);
-		resp.setHeader("Access-Control-Allow-Credentials", "true");			
-		if(OPTIONS.equals(req.getMethod()) && Arrays.asList(algamoneyApiProperty.getCors().getEnableOrigin()).contains(reqOrigin)) {
-			resp.setHeader("Access-Control-Allow-Origin", reqOrigin);
-			resp.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT, OPTIONS");
-			resp.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept");
-			resp.setHeader("Access-Control-Max-Age", "3600");
-			resp.setStatus(HttpServletResponse.SC_OK);
+		if(Arrays.asList(algamoneyApiProperty.getCors().getEnableOrigin()).contains(reqOrigin)) {
+		    resp.setHeader("Access-Control-Allow-Origin", reqOrigin);
+		    resp.setHeader("Access-Control-Allow-Credentials", "true");
+		    if(OPTIONS.equals(req.getMethod())) {
+		        resp.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT, OPTIONS");
+	            resp.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept");
+	            resp.setHeader("Access-Control-Max-Age", "3600");
+	            resp.setStatus(HttpServletResponse.SC_OK);
+		    } else {
+		        chain.doFilter(req, resp);
+		    }
 		} else {
-			chain.doFilter(req, resp);
+		    chain.doFilter(req, resp);  
 		}
 	}
 
@@ -55,5 +59,4 @@ public class CorsFilter implements Filter{
 
 	@Override
 	public void destroy() {}
-	
 }
